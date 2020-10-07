@@ -1,3 +1,22 @@
+const randomSelectTwo = () => {
+    const rando = random(1)
+    return rando > 0.5 ? true : false
+}
+
+const getRandomFromPalette = () => {
+    var rando = Math.floor(Math.random(0)*PALETTE.length)
+    return PALETTE[rando]
+}
+
+const randomG = () => {
+    var N = 4
+    var r = 0
+    for(var i = N; i > 0; i --){
+        r += Math.random()
+    }
+    return (r / N)*2 - 1
+}
+
 function quadBezier(p0,p1,p2, t) {
     pFinal = {};
     pFinal.x = Math.pow(1 - t, 2) * p0.x + 

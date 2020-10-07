@@ -12,11 +12,6 @@ const randomSelectTwo = () => {
     return rando > 0.5 ? true : false
 }
 
-const getRandomFromPalette = () => {
-    var rando = Math.floor(Math.random(0)*FLOWER_PALETTE.length)
-    return FLOWER_PALETTE[rando]
-}
-
 function f_setGradient(x, y, w, h, c1, c2, axis) {
   noFill();
   if (axis === 0) {
@@ -38,9 +33,36 @@ function f_setGradient(x, y, w, h, c1, c2, axis) {
   }
 }
 
-function f_multiGradient(x, y, w, h, cs, ls, axis) {
+function f_setRadialGrad(x1,x2,y1,y2,ra1,ra2,rb1,rb2,c1,c2) {
+    push()
+    noFill()
+    for(let i = 1; i > 0; i -= .02) {
+        let inter_x = lerp(x1,x2,i)
+        let inter_y = lerp(y1,y2,i)
+        let inter_ra = lerp(ra1, ra2, i)
+        let inter_rb = lerp(rb1, rb2, i)
+        let c = lerpColor(c1,c2,i)
+        strokeWeight(3)
+        stroke(c)
+        ellipse(inter_x,inter_y,inter_ra,inter_rb)
+    }
+    pop()
+}
+
+function f_multiRadialGrad(state,ra,rb,i) {
+    push()
+    pop()
+}
+
+function f_multiGradient(state, w, h, axis, center) {
+    push()
+    if (center) translate(-w/2, -h/2)
     noFill();
     let done = 0.0
+    let x = state.x
+    let y = state.y
+    let cs = state.colorStack
+    let ls = state.locationStack
     // Top to bottom gradient
     if (axis === 0) {
         for (let i = 0; i < cs.length-1; i++ ) {
@@ -55,6 +77,7 @@ function f_multiGradient(x, y, w, h, cs, ls, axis) {
             done = ls[i]
         }
     }
+    pop()
   }
 
 function quadBezier(p0,p1,p2, t) {

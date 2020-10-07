@@ -7,9 +7,7 @@ const ROWS = 6
 const PADDING = FLOWER_SIZE * 0.1
 const GRIDBOX = FLOWER_SIZE + PADDING
 const START = (FLOWER_SIZE / 4) + MARGIN
-
-let FLOWER_PALETTE
-ALL_FLOWERS = []
+let ALL_FLOWERS = []
 
 function setup() {
   const totalY = START-START/4 + GRIDBOX * ROWS
@@ -31,7 +29,11 @@ function setup() {
     color(6, 82, 148),
     color(38, 43, 51),
     color(31, 26, 26),
-    color(0,0,0)
+    color(0,0,0),
+    color(210, 247, 245),
+    color(222, 215, 186),
+    color(82, 81, 80),
+    color(207, 151, 152)
   ]
 }
 
@@ -48,7 +50,6 @@ function draw() {
   }
 
   ALL_FLOWERS.forEach(flower => {
-    f_setFlowerState(flower)
     drawFlower(flower)
   })
 }

@@ -1,13 +1,13 @@
-const state = {
-    offX: 24,
-    offY: 32
-}
-
 makeFlower = (state) => {
     return {x: state.x, y: state.y}
 }
 
 drawFlower = (state) => {
-    rect(state.x,state.y, 530)
-    ellipse(state.x,state.y,10)
+    push()
+    stroke(0)
+    rect(state.x,state.y, 520)
+    pop()
+    console.log(state.colorStack)
+    console.log(state.locationStack)
+    f_multiGradient(state.x-100,state.y-100, 50,50, state.colorStack, state.locationStack, 0)
 }

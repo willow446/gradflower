@@ -1,16 +1,26 @@
-let PALETTE = []
+let FLOWER_COLOR_ROLLS = 3
 
-const state = {
-  sides: 3,
-  stepsOut: 8,
-  thinStroke: 1,
-  thickStroke: 3
+const f_setGradStacks = (state) => {
+    t_colorStack = []
+    t_colorStack.push(getRandomFromPalette())
+    t_colorStack.push(getRandomFromPalette())
+    for (var i = 0; i < FLOWER_COLOR_ROLLS; i++) {
+        if (randomSelectTwo()) t_colorStack.push(getRandomFromPalette())
+    }
+    state.colorStack = t_colorStack
+    t_locStack = []
+    for (var j = 0; j < t_colorStack.length-2; j++) {
+        t_locStack.push(parseFloat(Math.random().toFixed(2)))
+    }
+    state.locationStack = t_locStack.sort()
+    state.locationStack.push(1)
 }
 
-const setState = (state) => {
-  state.numShapes = state.sides,
-  state.angle = 360 / state.numShapes,
-  state.singleStep = (CRYSTAL_SIZE / 2) / state.stepsOut,
-  state.layerColor = getRandomFromPalette()
-  return state
+const f_setFlowerState = (state) => {
+    f_setGradStacks(state)
+    return state
 }
+
+
+
+

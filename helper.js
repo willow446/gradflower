@@ -32,6 +32,48 @@ const randomSelectTwo = () => {
     return rando > 0.5 ? true : false
 }
 
+const pointsOnCircle = (n,r) => {
+    p = [{x:0,y:0}]
+    for(let i = 0; i < n; i++) {
+        let theta = Math.random()*360 
+        p.push({x:r*Math.sin((theta * PI)/180),y:r*Math.cos((theta * PI)/180)})
+    }
+    return p
+}
+
+const f_getGradColor = (state, i, inverse) => {
+    let c = (inverse==1) ? state.accentStack : 
+            (inverse==2) ? state.detailStack : state.colorStack
+    let loc = state.locationStack
+    if (i > 1) return
+    let j = 0
+    while(i > loc[j]) {
+        j++
+    }
+    let inter = (!j) ? map(i,0,loc[0],0,1) : map(i,loc[j-1],loc[j],0,1)
+    let c1 = c[j]
+    let c2 = c[j+1]
+    let o = lerpColor(c1,c2,inter)
+    return o
+}
+
+function f_gradBezierLine(state, p, inverse) {
+    push()
+    noFill()
+    beginShape(TRIANGLE_STRIP)
+    for(let i = 0; i < 1; i+= 0.01) {
+        c = f_getGradColor(state,i,inverse)
+        log(c)
+        stroke(c)
+        strokeWeight(Math.ceil(randomG2(1)))
+        let pf = cubicBezier(p[0],p[1],p[2],p[3],i)
+        vertex(pf.x,pf.y)
+    }
+    endShape()
+    pop()
+
+}
+
 function f_setGradient(x, y, w, h, c1, c2, axis) {
   noFill();
   if (axis === 0) {
@@ -94,7 +136,20 @@ function f_multiGradient(x,y,w,h,axis,center,cs,ls) {
         }
     }
     pop()
-  }
+}
+
+function f_bezierRectGrad(state,p,size,center,inverse,sizef,pointf) {
+    //draw curves using points
+    let cs = (inverse) ? state.accentStack : state.colorStack
+    let j = 0.01
+    while(j < 1) {
+        pf = cubicBezier(p[0],p[1],p[2],p[3],pointf(j))
+        t_w = size*randomG2()*sizef(j)
+        t_h = size*randomG2()*sizef(j)
+        f_multiGradient(pf.x,pf.y,t_w,t_h,Y_AXIS,center,cs,state.locationStack)
+        j+=0.03
+    }
+}
 
 function quadBezier(p0,p1,p2, t) {
     pFinal = {};

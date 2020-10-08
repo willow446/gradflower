@@ -45,7 +45,7 @@ const f_setGradStacks = (state) => {
 }
 
 const f_setFlowerAttr = (state) => {
-    state.offX = randomG() * 200
+    state.offX = randomG() * 100
     state.offY = randomG() * 100
     state.centerX = state.x + state.offX
     state.centerY = state.y + state.offY
@@ -100,19 +100,9 @@ const drawSideThinPedals = (state) => {
     push()
     let o_curl = state.curl
     let curl_incr = Math.abs(randomG()*5)
-    let short_side = false
     translate(state.centerX,state.centerY)
     if (state.l_side) {
         scale(-1,1)
-    }
-    let length_offset = Math.abs(state.offX)/10
-    if(state.offX < 0 && state.l_side) {
-        length_offset *= -1
-        short_side = true
-    }
-    if(state.offX > 0 && !state.l_side) {
-        length_offset *= -1
-        short_side = true
     }
     //ellipse(0,0,10)
     //get points
@@ -123,11 +113,10 @@ const drawSideThinPedals = (state) => {
         let branch_x = 0
         let branch_y = 30*(state.horz_petals-i)
         let branch_var = Math.random() + 1
-        let branch_length = state.branch_length/(branch_var*Math.abs(Math.ceil(i-state.horz_petals/2))) + length_offset
+        let branch_length = state.branch_length/(branch_var*Math.abs(Math.ceil(i-state.horz_petals/2))) + 10
         for(let i = 0; i<3; i++) {
             branch_x += randomG()*branch_length + 1.5*branch_length
             branch_y += randomG()*15 - i*state.curl
-            if(short_side) branch_y + length_offset
             p.push({x: branch_x, y: branch_y})
             //ellipse(branch_x,branch_y, 5)
         }

@@ -3,7 +3,7 @@ const FLOWER_SIZE = 500
 // layout
 const MARGIN = FLOWER_SIZE / 2
 const COLUMNS = 2
-const ROWS = 6
+const ROWS = 1
 const PADDING = FLOWER_SIZE * 0.1
 const GRIDBOX = FLOWER_SIZE + PADDING
 const START = (FLOWER_SIZE / 4) + MARGIN

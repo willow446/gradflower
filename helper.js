@@ -7,6 +7,26 @@ const randomG = () => {
     return (r / N)*2 - 1
 }
 
+const randomG2 = () => {
+    var N = 4
+    var r = 0
+    for(var i = N; i > 0; i --){
+        r += Math.random()
+    }
+    return (r / N)*2
+}
+
+const invertColor = (c) => {
+    let s = c.toString()
+    let o_s = s.replace(/[^\d,]/g, '')
+    let nums = o_s.split(',')
+    var o_nums = []
+    nums.forEach(element => {
+        o_nums.push(255-parseInt(element))
+    });
+    return color(o_nums[0],o_nums[1],o_nums[2])
+}
+
 const randomSelectTwo = () => {
     const rando = random(1)
     return rando > 0.5 ? true : false
@@ -54,15 +74,11 @@ function f_multiRadialGrad(state,ra,rb,i) {
     pop()
 }
 
-function f_multiGradient(state, w, h, axis, center) {
+function f_multiGradient(x,y,w,h,axis,center,cs,ls) {
     push()
     if (center) translate(-w/2, -h/2)
     noFill();
     let done = 0.0
-    let x = state.x
-    let y = state.y
-    let cs = state.colorStack
-    let ls = state.locationStack
     // Top to bottom gradient
     if (axis === 0) {
         for (let i = 0; i < cs.length-1; i++ ) {

@@ -1,20 +1,20 @@
-const FLOWER_SIZE = 500
+const FLOWER_SIZE = 600;
 
 // layout
-const MARGIN = FLOWER_SIZE / 2
-const COLUMNS = 2
-const ROWS = 1
-const PADDING = FLOWER_SIZE * 0.1
-const GRIDBOX = FLOWER_SIZE + PADDING
-const START = (FLOWER_SIZE / 4) + MARGIN
-let ALL_FLOWERS = []
+const MARGIN = FLOWER_SIZE / 2;
+const COLUMNS = 1;
+const ROWS = 1;
+const PADDING = FLOWER_SIZE * 0.1;
+const GRIDBOX = FLOWER_SIZE + PADDING;
+const START = FLOWER_SIZE / 4 + MARGIN;
+let ALL_FLOWERS = [];
 
 function setup() {
-  const totalY = START-START/4 + GRIDBOX * ROWS
-  createCanvas(windowWidth, totalY)
-  noLoop()
-  angleMode(DEGREES)
-  rectMode(CENTER)
+  const totalY = START - START / 4 + GRIDBOX * ROWS;
+  createCanvas(windowWidth, totalY);
+  noLoop();
+  angleMode(DEGREES);
+  rectMode(CENTER);
   FLOWER_PALETTE = [
     color(13, 87, 34),
     color(130, 13, 34),
@@ -29,27 +29,28 @@ function setup() {
     color(6, 82, 148),
     color(38, 43, 51),
     color(31, 26, 26),
-    color(0,0,0),
+    color(0, 0, 0),
     color(210, 247, 245),
     color(222, 215, 186),
     color(82, 81, 80),
-    color(207, 151, 152)
-  ]
+    color(207, 151, 152),
+  ];
 }
 
 function draw() {
+  background(0);
   // go to a point on the screen and draw a crystal
   // continue to do this until we run out of room
   for (let x = 0; x < COLUMNS; x++) {
     for (let y = 0; y < ROWS; y++) {
-      const posX = START + (x * GRIDBOX)
-      const posY = START-START/4 + (y * GRIDBOX)
-      const flower = makeFlower({x: posX, y: posY})
-      ALL_FLOWERS.push(flower)
+      const posX = START + x * GRIDBOX;
+      const posY = START - START / 4 + y * GRIDBOX;
+      const flower = makeFlower({ x: posX, y: posY });
+      ALL_FLOWERS.push(flower);
     }
   }
 
-  ALL_FLOWERS.forEach(flower => {
-    drawFlower(flower)
-  })
+  ALL_FLOWERS.forEach((flower) => {
+    drawFlower(flower);
+  });
 }

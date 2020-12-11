@@ -186,19 +186,28 @@ const drawInnerPedals = (state) => {
   push();
   translate(state.x, state.y);
   angleMode(DEGREES);
-  let inner_num_petals = Math.floor(Math.random() * 12) + 3;
-  let curl = (randomG2() * 60) / inner_num_petals + 10;
+  let inner_num_petals = Math.floor(Math.random() * 8) + 3;
+  let curl = randomG2() * 90;
+  randomSelectTwo()
+    ? (curl += randomG2() * 45)
+    : randomSelectTwo
+    ? (curl -= randomG2() * 45)
+    : (curl += 0);
   let inner_ang = 360 / inner_num_petals;
   let starting_r = state.inner_radius;
   let inner_num_rings = Math.floor(Math.random() * 6) + 3;
   let inner_step = state.inner_radius / inner_num_rings;
-  let starting_length = 60 * Math.random() + 30;
+  let starting_length = 80 * Math.random() + 10;
   let inner_length_step = (starting_length - 10) / inner_num_rings;
   let y_axis_on = randomSelectTwo() ? 1 : 0;
   state.rootsize = 10;
   let sf = randomSelectTwo() ? s_wideLeaf : s_leaveBend;
   let pf = getPointF();
   let cs = randomSelectTwo() ? state.detailStack : state.inverseColorStack;
+  let w = randomSelectTwo()
+    ? state.rootsize
+    : (2 * 3.14 * state.inner_radius * 0.4) / (2 * inner_num_petals);
+  let h = randomSelectTwo() ? state.rootsize * 1.2 : state.rootsize * 8;
   for (let i = 0; i < inner_num_rings; i++) {
     rotate(curl);
     for (let j = 0; j < inner_num_petals; j++) {
@@ -207,8 +216,8 @@ const drawInnerPedals = (state) => {
         starting_r,
         0,
         starting_length,
-        state.rootsize / (inner_num_rings / 2),
-        state.rootsize / (inner_num_rings / 8),
+        w / (i + 1),
+        h / (i + 1),
         sf,
         pf,
         y_axis_on,
@@ -225,22 +234,144 @@ const drawInnerPedals = (state) => {
   pop();
 };
 
-const assymetricEllipses = (state) => {
-  let top_num = Math.floor(Math.random() * 3) + 1;
-  let bot_num = Math.floor(Math.random() * 3) + 1;
-  let top_ang = top_num / 180;
-  let bot_ang = bot_num / 180;
+const innerOrnateStigma = (state) => {
+  push();
+  translate(state.x, state.y);
+  let zone = state.zones[Math.floor(Math.random() * state.zones.length)];
+  let stigma_info = zone.sel_zone_info;
+
+  if (randomSelectTwo()) {
+    stigma_info.push(Math.round(Math.random()));
+    stigma_info.concat(zone.sel_zone_info);
+  }
+  let base_len = randomG() * state.inner_radius + 40;
+  let len0 = Math.random() + 0.2;
+  let len1 = Math.random() + 0.3;
+  let y_axis0 = Math.round(Math.random());
+  let y_axis1 = Math.round(Math.random());
+  let innards = Math.floor(Math.random() * 10);
+  ap1 = {
+    x: 0,
+    y: 0,
+  };
+  ap2 = {
+    x: randomSelectTwo() ? 0 : (randomG() + 0.5) * 30,
+    y: base_len * len0,
+  };
+  ac1 = {
+    x: Math.random() * 25,
+    y: randomG2() * 20,
+  };
+  ac2 = {
+    x: Math.random() * 25,
+    y: randomG2() * 60,
+  };
+  bp1 = {
+    x: 0,
+    y: 0,
+  };
+  bp2 = {
+    x: randomSelectTwo() ? 0 : (randomG() + 0.5) * 30,
+    y: base_len * len1,
+  };
+  bc1 = {
+    x: Math.random() * 50,
+    y: randomG2() * 20,
+  };
+  bc2 = {
+    x: Math.random() * 50,
+    y: randomG2() * 80,
+  };
+  for (let k = innards; k > 0; k--) {
+    let m = map(k, 0, innards, 0.25, 1);
+    let c1 = [ap1, ap2, ac1, ac2];
+    let c2 = [bp1, bp2, bc1, bc2];
+    let a = interp_curves_and_len(c1, c2, m);
+    let b = interp_curves_and_len(c2, c1, m);
+    for (let i = 0; i < stigma_info.length; i++) {
+      if (stigma_info[i] > 0) {
+        f_ornateGradLine(a[0], a[1], a[2], a[3], y_axis0, state, 1);
+      } else if (stigma_info[i] == 0) {
+        f_ornateGradLine(b[0], b[1], b[2], b[3], y_axis1, state, 0);
+      }
+      rotate(360 / stigma_info.length);
+    }
+  }
+  pop();
+};
+
+const drawCenter = (state) => {
+  push();
+  translate(state.x, state.y);
+  c1 = state.colorStack[Math.floor(Math.random() * state.colorStack.length)];
+  c2 = state.colorStack[Math.floor(Math.random() * state.colorStack.length)];
+  if (c1 === c2)
+    c2 = state.colorStack[Math.floor(Math.random() * state.colorStack.length)];
+  f_setRadialGrad(
+    0,
+    0,
+    0,
+    0,
+    0,
+    state.inner_radius + Math.random() * 50,
+    0,
+    state.inner_radius + Math.random() * 50,
+    c1,
+    c2
+  );
+  pop();
+};
+
+const drawHairs = (state) => {
+  push();
+  translate(state.x, state.y);
+  let num_hairs = Math.floor(Math.random() * 10) + 20;
+  let hair_ang = 360 / num_hairs;
+  let hair_len = Math.floor(Math.random() * 20) + 10;
+  let ran = Math.floor(Math.random() * 3);
+  let start = state.inner_radius / 2 + (randomG2() * state.inner_radius) / 2;
+  let end = start + hair_len;
+  for (let i = 0; i < num_hairs; i++) {
+    f_gradLine(0, start, 0, end, 2, state, ran);
+    rotate(hair_ang);
+  }
+  let c1 = randomSelectTwo()
+    ? state.colorStack[Math.floor(Math.random() * state.colorStack.length)]
+    : state.accentStack[Math.floor(Math.random() * state.accentStack.length)];
+  let c2 = randomSelectTwo()
+    ? state.colorStack[Math.floor(Math.random() * state.colorStack.length)]
+    : state.accentStack[Math.floor(Math.random() * state.accentStack.length)];
+  if (c1 === c2)
+    c2 = state.colorStack[Math.floor(Math.random() * state.colorStack.length)];
+  f_setRadialGrad(
+    0,
+    0,
+    0,
+    0,
+    0,
+    2 * start - hair_len,
+    0,
+    2 * start - hair_len,
+    c1,
+    c2
+  );
+  pop();
 };
 
 const drawInnerComponents = (state) => {
+  state.inner_radius *= 0.7;
+  if (randomSelectTwo()) drawHairs(state);
+  state.inner_radius / 2;
+  if (randomSelectTwo()) drawHairs(state);
   drawInnerPedals(state);
   for (let i = 0; i < 2; i++) {
     if (randomSelectTwo()) {
       state.inner_radius = state.inner_radius / 2;
-      console.log("bang");
       drawInnerPedals(state);
+      state.inner_radius *= 2;
     }
   }
+  innerOrnateStigma(state);
 };
 
 const drawFilaments = (state) => {

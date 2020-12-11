@@ -64,6 +64,20 @@ const f_getGradColor = (state, i, inverse) => {
   return o;
 };
 
+const interp_curves_and_len = (c1, c2, i) => {
+  var r = [];
+  for (let j = 0; j < c1.length; j++) {
+    p = {
+      x: (c2[j].x - c1[j].x) * i + c1[j].x,
+      y: (c2[j].y - c1[j].y) * i + c1[j].y,
+    };
+    p.x *= i;
+    p.y *= i;
+    r.push(p);
+  }
+  return r;
+};
+
 function f_gradBezierLine(state, p, inverse) {
   push();
   noFill();
@@ -80,20 +94,37 @@ function f_gradBezierLine(state, p, inverse) {
   pop();
 }
 
-//TODO
-function f_gradLine(state, p, inverse) {
+function f_gradLine(x1, y1, x2, y2, strokew, state, inverse) {
   push();
   noFill();
   beginShape(TRIANGLE_STRIP);
   for (let i = 0; i < 1; i += 0.01) {
     c = f_getGradColor(state, i, inverse);
-    log(c);
     stroke(c);
-    strokeWeight(0.5);
-    //let pf = lerp(p[0]);
-    vertex(pf.x, pf.y);
+    strokeWeight(strokew);
+    ix = (x2 - x1) * i + x1;
+    iy = (y2 - y1) * i + y1;
+    vertex(ix, iy);
   }
   endShape();
+  pop();
+}
+
+function f_ornateGradLine(p1, p2, c1, c2, y_axis, state, inverse) {
+  push();
+  translate(p1.x, p1.y);
+  for (let i = 0; i < 1; i += 0.01) {
+    pf = cubicBezier(p1, c1, c2, p2, i);
+    y = i * dist(p1.x, p1.y, p2.x, p2.y);
+    if (!y_axis) {
+      f_gradLine(-pf.x, y, pf.x, y, 2, state, inverse);
+    } else {
+      c = f_getGradColor(state, i, inverse);
+      stroke(c);
+      strokeWeight(2);
+      line(-pf.x, y, pf.x, y);
+    }
+  }
   pop();
 }
 

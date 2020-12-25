@@ -10,6 +10,9 @@ let F_L2R = 0;
 let F_R2L = 1;
 let FLOWER_PALETTE = [];
 let F_PETAL_LENGTH = 100;
+let F_RAND = 0.1;
+let F_SMALL_RAND = 10;
+let F_BIG_RAND = 50;
 
 const getRandomFromPalette = () => {
   var rando = Math.floor(Math.random(0) * FLOWER_PALETTE.length);
@@ -249,7 +252,7 @@ const innerOrnateStigma = (state) => {
   let len1 = Math.random() + 0.3;
   let y_axis0 = Math.round(Math.random());
   let y_axis1 = Math.round(Math.random());
-  let innards = Math.floor(Math.random() * 10);
+  let innards = Math.floor(Math.random() * 7);
   ap1 = {
     x: 0,
     y: 0,
@@ -371,7 +374,8 @@ const drawInnerComponents = (state) => {
       state.inner_radius *= 2;
     }
   }
-  innerOrnateStigma(state);
+  if (randomSelectTwo()) innerOrnateStigma(state);
+  if (randomSelectTwo()) innerOrnateStigma(state);
 };
 
 const drawFilaments = (state) => {

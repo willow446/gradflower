@@ -1,17 +1,27 @@
 const FLOWER_SIZE = 600;
 
 // layout
-const MARGIN = FLOWER_SIZE / 2;
+const MARGIN = FLOWER_SIZE / 4;
 const COLUMNS = 1;
 const ROWS = 1;
-const PADDING = FLOWER_SIZE * 0.1;
+const PADDING = FLOWER_SIZE / 4;
 const GRIDBOX = FLOWER_SIZE + PADDING;
 const START = FLOWER_SIZE / 4 + MARGIN;
 let ALL_FLOWERS = [];
 
+function saveFlower() {
+  let num = Math.random() * 33;
+  saveCanvas("gradflower" + num, "png");
+}
+
 function setup() {
-  const totalY = START - START / 4 + GRIDBOX * ROWS;
-  createCanvas(windowWidth, totalY);
+  const totalY = 1000;
+  let d = createDiv();
+  d.id("canvasHolder");
+  d.style("display: flex");
+  d.style("flex-direction: column");
+  let c = createCanvas(FLOWER_SIZE, FLOWER_SIZE);
+  c.parent("canvasHolder");
   noLoop();
   angleMode(DEGREES);
   rectMode(CENTER);
@@ -35,6 +45,18 @@ function setup() {
     color(82, 81, 80),
     color(207, 151, 152),
   ];
+  let horzDiv = createDiv();
+  horzDiv.id("buttonHolder");
+  horzDiv.parent("canvasHolder");
+  horzDiv.style("display: flex");
+  let save = createButton("save");
+  save.parent("buttonHolder");
+  save.mousePressed(saveFlower);
+  let rd = createButton("redraw");
+  rd.parent("buttonHolder");
+  rd.mousePressed(redraw);
+  let p = createDiv("Note: redrawing process may take up to 30 seconds");
+  p.parent("buttonHolder");
 }
 
 function draw() {
@@ -44,7 +66,7 @@ function draw() {
   for (let x = 0; x < COLUMNS; x++) {
     for (let y = 0; y < ROWS; y++) {
       const posX = START + x * GRIDBOX;
-      const posY = START - START / 4 + y * GRIDBOX;
+      const posY = START + y * GRIDBOX;
       const flower = makeFlower({ x: posX, y: posY });
       ALL_FLOWERS.push(flower);
     }

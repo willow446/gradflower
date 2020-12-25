@@ -59,7 +59,6 @@ function setup() {
 }
 
 function draw() {
-  background(255);
   for (let x = 0; x < COLUMNS; x++) {
     for (let y = 0; y < ROWS; y++) {
       const posX = START + x * GRIDBOX;

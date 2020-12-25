@@ -55,7 +55,7 @@ function setup() {
   save.parent("buttonHolder");
   save.mousePressed(saveFlower);
   let p = createDiv(
-    "Refresh the page to roll a new drawing. Note: redrawing process may take up to 30 seconds"
+    " Refresh the page to roll a new drawing. Note: redrawing process may take up to 30 seconds"
   );
   p.parent("buttonHolder");
 }

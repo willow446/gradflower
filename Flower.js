@@ -399,11 +399,6 @@ const drawFilaments = (state) => {
 const drawFlower = (state) => {
   angleMode(DEGREES);
   //console.log(state)
-  push();
-  stroke(255);
-  noFill();
-  rect(state.x, state.y, 520);
-  pop();
   //f_multiGradient(state.x,state.y,400,500,Y_AXIS,F_CENTER,state.colorStack,state.locationStack)
   push();
   drawOuterPetals(state);

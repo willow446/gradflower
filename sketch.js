@@ -60,9 +60,6 @@ function setup() {
 }
 
 function draw() {
-  background(0);
-  // go to a point on the screen and draw a crystal
-  // continue to do this until we run out of room
   for (let x = 0; x < COLUMNS; x++) {
     for (let y = 0; y < ROWS; y++) {
       const posX = START + x * GRIDBOX;

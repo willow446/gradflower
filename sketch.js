@@ -17,7 +17,7 @@ function saveFlower() {
 }
 
 function setup() {
-  const totalY = 1000;
+  background(255);
   let d = createDiv();
   d.id("canvasHolder");
   d.style("display: flex");

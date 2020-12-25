@@ -52,14 +52,14 @@ function setup() {
   let save = createButton("save");
   save.parent("buttonHolder");
   save.mousePressed(saveFlower);
-  let rd = createButton("redraw");
-  rd.parent("buttonHolder");
-  rd.mousePressed(redraw);
-  let p = createDiv("Note: redrawing process may take up to 30 seconds");
+  let p = createDiv(
+    "Refresh the page to roll a new drawing. Note: redrawing process may take up to 30 seconds"
+  );
   p.parent("buttonHolder");
 }
 
 function draw() {
+  background(255);
   for (let x = 0; x < COLUMNS; x++) {
     for (let y = 0; y < ROWS; y++) {
       const posX = START + x * GRIDBOX;

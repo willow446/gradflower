@@ -9,9 +9,11 @@ const GRIDBOX = FLOWER_SIZE + PADDING;
 const START = FLOWER_SIZE / 4 + MARGIN;
 let ALL_FLOWERS = [];
 
+let global_canvas = null;
+
 function saveFlower() {
   let num = Math.random() * 33;
-  saveCanvas("gradflower" + num, "png");
+  saveCanvas(global_canvas, "gradflower" + num, "png");
 }
 
 function setup() {
@@ -20,8 +22,8 @@ function setup() {
   d.id("canvasHolder");
   d.style("display: flex");
   d.style("flex-direction: column");
-  let c = createCanvas(FLOWER_SIZE, FLOWER_SIZE);
-  c.parent("canvasHolder");
+  global_canvas = createCanvas(FLOWER_SIZE, FLOWER_SIZE);
+  global_canvas.parent("canvasHolder");
   noLoop();
   angleMode(DEGREES);
   rectMode(CENTER);

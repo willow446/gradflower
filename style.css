@@ -1,8 +1,9 @@
 body {
-    margin: 0;
-    display: flex;
+  margin: 0;
+  display: flex;
 }
 
-body #script {
-    float: left;
+body {
+  display: grid;
+  place-content: center;
 }
